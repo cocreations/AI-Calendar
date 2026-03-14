@@ -104,7 +104,7 @@ class _SetupScreenState extends State<SetupScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text('AI Calendar Setup'),
+          title: const Text('Cadence Setup'),
           backgroundColor: Colors.black45,
           foregroundColor: Colors.white,
         ),
@@ -131,7 +131,7 @@ class _SetupScreenState extends State<SetupScreen> {
             const Icon(Icons.calendar_month, size: 80, color: Colors.blue),
             const SizedBox(height: 24),
             const Text(
-              'Welcome to AI Calendar',
+              'Welcome to Cadence',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
               textAlign: TextAlign.center,
             ),

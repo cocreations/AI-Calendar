@@ -1,6 +1,8 @@
-# AI Calendar
+# Cadence
 
-A voice-first calendar app powered by Claude. Speak commands like "What do I have today?" or "Schedule lunch with Bob at noon tomorrow" and the AI handles the rest.
+**Just say the word.**
+
+A voice-first calendar app powered by Claude. Speak commands like "What do I have today?" or "Schedule lunch with Bob at noon tomorrow" and Cadence handles the rest.
 
 Built with Flutter. No backend server — runs entirely on-device with direct API calls to Google Calendar and Anthropic.
 
@@ -45,7 +47,7 @@ Go to [console.cloud.google.com/apis/library/calendar-json.googleapis.com](https
 Go to [console.cloud.google.com/apis/credentials/consent](https://console.cloud.google.com/apis/credentials/consent).
 
 - Choose **External** user type
-- Fill in App name ("AI Calendar"), your email for support/developer contact
+- Fill in App name ("Cadence"), your email for support/developer contact
 - On the Scopes step, add: `https://www.googleapis.com/auth/calendar`
 - On the Test users step, add your own Google account email
 - Save and continue through remaining steps
@@ -61,7 +63,7 @@ You need to create **two** client IDs (three if building for iOS):
 #### a) Web application (required — even for mobile)
 
 - Application type: **Web application**
-- Name: anything (e.g. "AI Calendar Web Client")
+- Name: anything (e.g. "Cadence Web Client")
 - No redirect URIs needed
 - Click Create
 

@@ -131,7 +131,7 @@ class _VoiceScreenState extends State<VoiceScreen>
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text('AI Calendar'),
+          title: const Text('Cadence'),
           backgroundColor: Colors.black45,
           foregroundColor: Colors.white,
           actions: [

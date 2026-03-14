@@ -1,5 +1,5 @@
 name: ai_calendar
-description: "Voice-first AI calendar app powered by Claude"
+description: "Cadence — just say the word. Voice-first calendar app powered by Claude."
 publish_to: 'none'
 version: 1.0.0+1
 

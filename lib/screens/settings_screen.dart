@@ -61,13 +61,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            onPressed: () {
+              final text = controller.text.trim();
+              if (text.isEmpty) {
+                Navigator.pop(ctx);
+              } else {
+                Navigator.pop(ctx, text);
+              }
+            },
             child: const Text('Save'),
           ),
         ],
       ),
     );
-    controller.dispose();
 
     if (result != null && result.isNotEmpty) {
       await Services.storage.setApiKey(result);
@@ -142,14 +148,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () =>
-                  Navigator.pop(ctx, promptController.text.trim()),
+              onPressed: () {
+                final text = promptController.text.trim();
+                if (text.isEmpty) {
+                  Navigator.pop(ctx);
+                } else {
+                  Navigator.pop(ctx, text);
+                }
+              },
               child: const Text('Save'),
             ),
           ],
         ),
       );
-      promptController.dispose();
 
       if (prompt != null && prompt.isNotEmpty) {
         final config = CalendarConfig(
@@ -196,13 +207,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            onPressed: () {
+              final text = controller.text.trim();
+              if (text.isEmpty) {
+                Navigator.pop(ctx);
+              } else {
+                Navigator.pop(ctx, text);
+              }
+            },
             child: const Text('Save'),
           ),
         ],
       ),
     );
-    controller.dispose();
 
     if (result != null && result.isNotEmpty) {
       await Services.storage.updateCalendarPrompt(cal.calendarId, result);

@@ -54,7 +54,7 @@ class AiService {
     final now = DateTime.now();
     final tz = now.timeZoneName;
     final buf = StringBuffer();
-    buf.writeln('You are a helpful voice-first calendar assistant.');
+    buf.writeln('You are Cadence, a helpful voice-first calendar assistant.');
     buf.writeln('Current date and time: ${now.toIso8601String()} ($tz)');
     buf.writeln('Be concise and conversational - your responses will be spoken aloud.');
     buf.writeln('');

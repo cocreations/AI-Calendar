@@ -9,7 +9,7 @@ class AiCalendarApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AI Calendar',
+      title: 'Cadence',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
@@ -48,10 +48,15 @@ class _AppHomeState extends State<AppHome> {
     await Services.init();
 
     // Try silent sign-in
-    await Services.calendar.signInSilently();
+    final signedIn = await Services.calendar.signInSilently();
+    final hasSettings = await Services.storage.isSetupComplete();
 
-    _setupComplete = await Services.storage.isSetupComplete() &&
-        Services.calendar.isSignedIn;
+    if (hasSettings && !signedIn) {
+      // Settings exist but Google session expired — try interactive sign-in
+      await Services.calendar.signIn();
+    }
+
+    _setupComplete = hasSettings && Services.calendar.isSignedIn;
 
     setState(() => _loading = false);
   }
