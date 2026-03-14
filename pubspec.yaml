@@ -1,0 +1,30 @@
+name: ai_calendar
+description: "Voice-first AI calendar app powered by Claude"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_secure_storage: ^9.2.4
+  google_sign_in: ^6.2.2
+  googleapis: ^14.0.0
+  extension_google_sign_in_as_googleapis_auth: ^2.0.12
+  anthropic_sdk_dart: ^1.3.1
+  speech_to_text: ^7.0.0
+  flutter_tts: ^4.2.0
+  sqflite: ^2.4.2
+  path: ^1.9.1
+  url_launcher: ^6.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

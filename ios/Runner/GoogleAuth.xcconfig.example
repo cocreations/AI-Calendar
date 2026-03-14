@@ -1,0 +1,4 @@
+// Copy this file to GoogleAuth.xcconfig and fill in your values.
+// Get these from Google Cloud Console > Credentials > iOS OAuth client.
+GOOGLE_IOS_CLIENT_ID=YOUR_IOS_CLIENT_ID.apps.googleusercontent.com
+GOOGLE_REVERSED_CLIENT_ID=com.googleusercontent.apps.YOUR_IOS_CLIENT_ID
