@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/services.dart';
 import '../services/ai_service.dart';
 import 'settings_screen.dart';
+import 'background.dart';
 
 enum VoiceState { idle, listening, thinking, speaking }
 
@@ -126,42 +127,52 @@ class _VoiceScreenState extends State<VoiceScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('AI Calendar'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () async {
-              await Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
-              // Refresh in case settings changed
-              setState(() {});
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(child: _buildConversation()),
-          _buildStateIndicator(),
-          _buildMicButton(),
-          const SizedBox(height: 32),
-        ],
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text('AI Calendar'),
+          backgroundColor: Colors.black45,
+          foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                );
+                // Refresh in case settings changed
+                setState(() {});
+              },
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(child: _buildConversation()),
+            _buildStateIndicator(),
+            _buildMicButton(),
+            const SizedBox(height: 32),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildConversation() {
     if (_messages.isEmpty) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.all(32),
-          child: Text(
+      return Center(
+        child: Container(
+          margin: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.black54,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: const Text(
             'Tap the microphone and ask about your calendar',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, color: Colors.grey),
+            style: TextStyle(fontSize: 18, color: Colors.white70),
           ),
         ),
       );
@@ -184,13 +195,13 @@ class _VoiceScreenState extends State<VoiceScreen>
             ),
             decoration: BoxDecoration(
               color: isUser
-                  ? Theme.of(context).colorScheme.primaryContainer
-                  : Theme.of(context).colorScheme.surfaceContainerHighest,
+                  ? Colors.blue.withAlpha(200)
+                  : Colors.black.withAlpha(180),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
               msg.text,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
           ),
         );
@@ -208,16 +219,21 @@ class _VoiceScreenState extends State<VoiceScreen>
 
     if (_state == VoiceState.idle) return const SizedBox(height: 24);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.black45,
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (_state == VoiceState.thinking)
-            const SizedBox(
+            SizedBox(
               width: 16,
               height: 16,
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: CircularProgressIndicator(strokeWidth: 2, color: color),
             )
           else
             Container(

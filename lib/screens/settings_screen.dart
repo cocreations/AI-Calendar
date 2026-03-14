@@ -5,6 +5,7 @@ import '../services/storage_service.dart';
 import '../services/contacts_service.dart';
 import '../models/calendar_config.dart';
 import 'setup_screen.dart';
+import 'background.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -226,15 +227,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Settings')),
-        body: const Center(child: CircularProgressIndicator()),
+      return AppBackground(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: const Text('Settings'),
+            backgroundColor: Colors.black45,
+            foregroundColor: Colors.white,
+          ),
+          body: const Center(child: CircularProgressIndicator(color: Colors.white)),
+        ),
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
-      body: ListView(
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text('Settings'),
+          backgroundColor: Colors.black45,
+          foregroundColor: Colors.white,
+        ),
+        body: ListView(
         children: [
           _buildSection('AI Model', [
             RadioGroup<String>(
@@ -322,27 +336,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 32),
         ],
       ),
+      ),
     );
   }
 
   Widget _buildSection(String title, List<Widget> children) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.primary,
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.lightBlueAccent,
+              ),
             ),
           ),
-        ),
-        ...children,
-        const Divider(),
-      ],
+          Theme(
+            data: Theme.of(context).copyWith(
+              listTileTheme: const ListTileThemeData(
+                textColor: Colors.white,
+                iconColor: Colors.white70,
+              ),
+            ),
+            child: Column(children: children),
+          ),
+        ],
+      ),
     );
   }
 }
