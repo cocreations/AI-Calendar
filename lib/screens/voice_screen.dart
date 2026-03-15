@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/services.dart';
 import '../services/ai_service.dart';
 import 'settings_screen.dart';
+import 'about_screen.dart';
 import 'background.dart';
 
 enum VoiceState { idle, listening, thinking, speaking }
@@ -147,6 +148,14 @@ class _VoiceScreenState extends State<VoiceScreen>
           backgroundColor: Colors.black45,
           foregroundColor: Colors.white,
           actions: [
+            IconButton(
+              icon: const Icon(Icons.favorite_border),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const AboutScreen()),
+                );
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () async {

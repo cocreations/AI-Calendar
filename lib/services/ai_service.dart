@@ -76,7 +76,8 @@ class AiService {
             timeMax: tomorrowEnd,
           );
           for (final event in events) {
-            final dt = event.start?.dateTime ?? event.start?.date;
+            final dt = (event.start?.dateTime ?? event.start?.date)
+                ?.toLocal();
             allEvents.add({
               'summary': event.summary,
               'start': dt?.toIso8601String(),
@@ -117,6 +118,8 @@ class AiService {
         'Do NOT end with a follow-up question (e.g. "Would you like me to…?", "Anything else?"). Just stop after the information or confirmation.');
     buf.writeln(
         'When mentioning dates, ALWAYS use the day_of_week field from event data. Never guess the day of week.');
+    buf.writeln(
+        'All event times are in the user\'s local timezone ($tz). Use them directly — do not convert.');
     buf.writeln('');
     buf.writeln('## Calendars');
     buf.writeln(
@@ -309,8 +312,10 @@ class AiService {
             .then((events) => events
                 .map((event) {
                   final startDt =
-                      event.start?.dateTime ?? event.start?.date;
-                  final endDt = event.end?.dateTime ?? event.end?.date;
+                      (event.start?.dateTime ?? event.start?.date)
+                          ?.toLocal();
+                  final endDt =
+                      (event.end?.dateTime ?? event.end?.date)?.toLocal();
                   return <String, dynamic>{
                     'calendar_id': calId,
                     'event_id': event.id,

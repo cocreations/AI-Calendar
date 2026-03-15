@@ -2,7 +2,11 @@
 
 **Just say the word.**
 
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow?style=for-the-badge&logo=buy-me-a-coffee)](https://buymeacoffee.com/krisrandall)
+
 A voice-first calendar app powered by Claude. Speak commands like "What do I have today?" or "Schedule lunch with Bob at noon tomorrow" and Cadence handles the rest.
+
+I built Cadence for my partner, who needed help keeping their life organised. I thought it might help other people too, and I hope that it does. If you find it useful, consider [buying me a coffee](https://buymeacoffee.com/krisrandall).
 
 Built with Flutter. No backend server — runs entirely on-device with direct API calls to Google Calendar and Anthropic.
 
