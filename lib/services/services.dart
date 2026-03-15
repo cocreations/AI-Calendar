@@ -21,6 +21,8 @@ class Services {
       model: model,
       calendarConfigs: calendars,
     );
+    // Pre-fetch today's events in background (don't block init)
+    ai.refreshEventCache();
   }
 
   static Future<void> reinitAi() async {
@@ -32,5 +34,6 @@ class Services {
       model: model,
       calendarConfigs: calendars,
     );
+    ai.refreshEventCache();
   }
 }

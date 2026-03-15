@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -6,6 +7,9 @@ class SpeechService {
   final _stt = stt.SpeechToText();
   bool _sttInitialized = false;
   bool _isSpeaking = false;
+  final List<String> _ttsQueue = [];
+  bool _processingQueue = false;
+  Completer<void>? _utteranceCompleter;
 
   bool get isSpeaking => _isSpeaking;
 
@@ -16,7 +20,8 @@ class SpeechService {
     await _tts.setPitch(1.0);
 
     _tts.setCompletionHandler(() {
-      _isSpeaking = false;
+      _utteranceCompleter?.complete();
+      _utteranceCompleter = null;
     });
   }
 
@@ -26,13 +31,43 @@ class SpeechService {
     return _sttInitialized;
   }
 
+  /// Speak a complete string (non-queued, for simple use).
   Future<void> speak(String text) async {
     _isSpeaking = true;
+    _utteranceCompleter = Completer<void>();
     await _tts.speak(text);
+    await _utteranceCompleter!.future;
+    _isSpeaking = false;
+  }
+
+  /// Queue a sentence for TTS. Sentences play one after another.
+  /// Returns immediately — speech happens asynchronously.
+  void queueSpeak(String text) {
+    _ttsQueue.add(text);
+    _isSpeaking = true;
+    if (!_processingQueue) {
+      _processQueue();
+    }
+  }
+
+  Future<void> _processQueue() async {
+    _processingQueue = true;
+    while (_ttsQueue.isNotEmpty) {
+      final sentence = _ttsQueue.removeAt(0);
+      _utteranceCompleter = Completer<void>();
+      await _tts.speak(sentence);
+      await _utteranceCompleter!.future;
+    }
+    _processingQueue = false;
+    _isSpeaking = false;
   }
 
   Future<void> stopSpeaking() async {
+    _ttsQueue.clear();
+    _processingQueue = false;
     _isSpeaking = false;
+    _utteranceCompleter?.complete();
+    _utteranceCompleter = null;
     await _tts.stop();
   }
 

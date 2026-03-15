@@ -62,13 +62,25 @@ class _VoiceScreenState extends State<VoiceScreen>
         _scrollToBottom();
 
         try {
-          final response = await Services.ai.sendMessage(text);
-          setState(() => _state = VoiceState.speaking);
+          bool firstSentence = true;
+          await Services.ai.sendMessage(
+            text,
+            onSentence: (sentence) {
+              if (firstSentence) {
+                firstSentence = false;
+                if (mounted) {
+                  setState(() => _state = VoiceState.speaking);
+                }
+              }
+              Services.speech.queueSpeak(sentence);
+            },
+          );
+          if (mounted) {
+            setState(() => _state = VoiceState.speaking);
+          }
           _scrollToBottom();
 
-          await Services.speech.speak(response);
-
-          // Wait for TTS to finish
+          // Wait for TTS queue to drain
           while (Services.speech.isSpeaking) {
             await Future.delayed(const Duration(milliseconds: 100));
           }
