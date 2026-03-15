@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart' as gcal;
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 import '../services/services.dart';
 import '../services/storage_service.dart';
 import '../services/contacts_service.dart';
@@ -350,11 +354,105 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: _clearConversation,
             ),
           ]),
+          _buildSection('Background', [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Row(
+                children: [
+                  ...BackgroundManager.builtInBackgrounds.map((asset) =>
+                      _buildBgThumbnail(asset)),
+                  _buildCustomBgButton(),
+                ],
+              ),
+            ),
+          ]),
           const SizedBox(height: 32),
         ],
       ),
       ),
     );
+  }
+
+  Widget _buildBgThumbnail(String asset) {
+    final isSelected = BackgroundManager.currentValue == asset;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () async {
+          await BackgroundManager.setBackground(asset);
+          setState(() {});
+        },
+        child: Container(
+          margin: const EdgeInsets.all(4),
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: isSelected
+                ? Border.all(color: Colors.lightBlueAccent, width: 3)
+                : null,
+            image: DecorationImage(
+              image: AssetImage(asset),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: isSelected
+              ? const Center(
+                  child: Icon(Icons.check_circle,
+                      color: Colors.white, size: 28))
+              : null,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCustomBgButton() {
+    final isCustom = !BackgroundManager.builtInBackgrounds
+        .contains(BackgroundManager.currentValue);
+    return Expanded(
+      child: GestureDetector(
+        onTap: _pickCustomBackground,
+        child: Container(
+          margin: const EdgeInsets.all(4),
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.white12,
+            border: isCustom
+                ? Border.all(color: Colors.lightBlueAccent, width: 3)
+                : Border.all(color: Colors.white24, width: 1),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(isCustom ? Icons.check_circle : Icons.photo_library,
+                  color: Colors.white70, size: 28),
+              const SizedBox(height: 4),
+              const Text('Photo',
+                  style: TextStyle(color: Colors.white70, fontSize: 11)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickCustomBackground() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 2048,
+      maxHeight: 2048,
+      imageQuality: 90,
+    );
+    if (image == null) return;
+
+    // Copy to app directory so it persists
+    final dir = await getApplicationDocumentsDirectory();
+    final ext = p.extension(image.path);
+    final dest = File('${dir.path}/custom_bg$ext');
+    await File(image.path).copy(dest.path);
+
+    await BackgroundManager.setBackground(dest.path);
+    if (mounted) setState(() {});
   }
 
   Widget _buildSection(String title, List<Widget> children) {

@@ -7,6 +7,7 @@ class StorageService {
   static const _keyApiKey = 'anthropic_api_key';
   static const _keyModel = 'claude_model';
   static const _keyCalendars = 'calendar_configs';
+  static const _keyBackground = 'background_image';
 
   static const defaultModel = 'claude-sonnet-4-20250514';
 
@@ -59,6 +60,11 @@ class StorageService {
       await setCalendarConfigs(configs);
     }
   }
+
+  // Background
+  Future<String?> getBackground() => _storage.read(key: _keyBackground);
+  Future<void> setBackground(String value) =>
+      _storage.write(key: _keyBackground, value: value);
 
   // Check if setup is complete
   Future<bool> isSetupComplete() async {

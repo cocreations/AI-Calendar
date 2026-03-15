@@ -3,6 +3,7 @@ import 'calendar_service.dart';
 import 'contacts_service.dart';
 import 'speech_service.dart';
 import 'ai_service.dart';
+import '../screens/background.dart';
 
 class Services {
   static final storage = StorageService();
@@ -13,6 +14,7 @@ class Services {
 
   static Future<void> init() async {
     await speech.init();
+    await BackgroundManager.init();
     final apiKey = await storage.getApiKey();
     final model = await storage.getModel();
     final calendars = await storage.getCalendarConfigs();
